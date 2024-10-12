@@ -1,0 +1,61 @@
+create database Quiz;
+go 
+use Quiz
+go
+
+create table Curso(
+id int identity(1,1) primary key,
+curso varchar (30),
+sigla varchar (5)
+);
+go
+
+create table Disciplina(
+
+id int identity(1,1) primary key,
+idCurso int foreign key references Curso,
+disciplina varchar(30),
+sigla varchar (5)
+);
+go
+
+create table questoes(
+id int identity(1,1) primary key,
+Enunciado varchar (50),
+pontuacao int,
+idDisciplina int foreign key references Disciplina
+);
+go
+
+create table Alternativa(
+id int identity(1,1) primary key,
+idQuestao int foreign key references questoes,
+Enunciado varchar (50),
+correta bit
+);
+go
+
+create table usuario(
+id int identity(1,1) primary key,
+loginUsuario varchar (50),
+email varchar (100),
+senha varchar (30),
+pontuacao int
+);
+go
+
+create table quiz(
+id int identity(1,1) primary key,
+dataquiz date,
+idCurso int foreign key references curso,
+idDisciplina int foreign key references disciplina,
+idUsuario int foreign key references usuario,
+idQuestoes01 int foreign key references questoes,
+idQuestoes02 int foreign key references questoes,
+idQuestoes03 int foreign key references questoes,
+idQuestoes04 int foreign key references questoes,
+idQuestoes05 int foreign key references questoes,
+pontuacao int
+);
+go
+
