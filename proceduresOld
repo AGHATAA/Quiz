@@ -1,8 +1,6 @@
 use Quiz
 go
 
---PROCEDORES CURSO
-
 create proc inserirCurso
 @curso varchar (30),
 @sigla varchar (5)
@@ -11,8 +9,6 @@ begin
 insert into curso values (@curso,@sigla)
 --exec inserirCurso "Secretariado","Sec"
 end
-
-
 go
 create proc deletarCurso
 @id int
@@ -21,8 +17,6 @@ begin
 delete curso where id=@id
 --exec deletarCurso 2
 end
-
-
 go
 create proc alterarCurso
 @id int,
@@ -33,8 +27,6 @@ begin
 update curso set curso = @curso, sigla = @sigla where id = @id
 --exec alterarCurso 2, "Secretariado", "Secre"
 end
-
-
 go
 create proc consultarCurso
 as
@@ -42,8 +34,6 @@ begin
 select * from curso
 --exec consultarCurso 
 end
-
-
 go
 create proc consultarSiglaPorCurso
 @curso varchar (30)
@@ -52,8 +42,6 @@ begin
 select * from Curso where curso = @curso
 --exec consultarSiglaPorCurso
 end
-
-
 go
 create proc consultarCursoPorSigla
 @sigla varchar (5)
@@ -65,7 +53,6 @@ end
 go
 
 
---PROCEDORES DICIPLINA
 
 --diciplina
 create proc inserirDisciplina
@@ -77,8 +64,6 @@ begin
 insert into disciplina values ( @idCurso,@disciplina,@sigla)
 --exec inserirDisciplina   1,"Banco de Dados","BD"
 end
-
-
 go
 create proc deletarDisciplina
 @id int
@@ -87,8 +72,6 @@ begin
 delete disciplina where id=@id
 --exec deletarDisciplina 2
 end
-
-
 go
 create proc alterarDisciplina
 @id int,
@@ -100,8 +83,6 @@ begin
 update disciplina set idCurso = @idCurso, disciplina =  @disciplina, sigla = @sigla where id = @id
 --exec alterarDisciplina 1, 2, "Banco de Dados", "BD"
 end
-
-
 go
 create proc consultarDisciplina
 as
@@ -109,8 +90,6 @@ begin
 select * from disciplina
 --exec consultarDisciplina 
 end
-
-
 go
 create proc consultarDisciplinaPorCurso
 @idCurso int
@@ -119,12 +98,9 @@ begin
 select * from disciplina where idCurso = @idCurso
 --exec consultarDisciplinaPorCurso 
 end
-
-
---PROCEDORES USUARIO
+go
 
 --Usuario
-go
 create proc inserirUsuario
 @id int,
 @loginUsuario varchar (50),
@@ -136,8 +112,6 @@ begin
 insert into usuario values(@loginUsuario,@email,@senha,@pontuacao)
 --exec inserirUsuario "etec22","albert einsten@etec.sp.gov.br",123456,6.7
 end
-
-
 go
 create proc deletarUsuario
 @id int
@@ -146,8 +120,6 @@ begin
 delete Usuario where id=@id
 --exec deletarUsuario 2
 end
-
-
 go
 create proc alterarUsuario
 @id int,
@@ -160,8 +132,6 @@ begin
 update usuario set loginUsuario = @loginUsuario,email = @email, senha = @senha, pontuacao = @pontuacao where id=@id
 --exec alterarUsuario 2, "etec123", "alberteinsten@etec.sp.gov.br","765432",8
 end
-
-
 go
 create proc alterarSenhaPorID
 @id int,
@@ -171,8 +141,6 @@ begin
 update usuario set senha = @senha where id=@id
 --exec alterarUsuario 2,"765432"
 end
-
-
 go
 create proc alterarSenhaPorLogin
 @loginUsuario varchar (50),
@@ -182,8 +150,6 @@ begin
 update usuario set senha = @senha where LoginUsuario=@loginUsuario 
 --exec alterarUsuario 2,  "etec123"
 end
-
-
 go
 create proc consultarUsuario
 as
@@ -191,8 +157,6 @@ begin
 select * from Usuario
 --exec consultarUsuario
 end
-
-
 go
 create proc consultarUsuarioPorLogin
 @loginUsuario varchar (50)
@@ -201,8 +165,6 @@ begin
 select * from usuario where loginUsuario = @loginUsuario 
 --exec  consultarUsuarioPorLogin  "etec123"
 end
-
-
 go
 create proc consultarUsuarioPorEmail
 @email varchar (100)
@@ -211,8 +173,6 @@ begin
 select * from usuario where email  = @email 
 --exec consultarUsuarioPorEmail "alberteinsten@etec.sp.gov.br"
 end
-
-
 go
 create proc consultarUsuarioPorID
 @id int
