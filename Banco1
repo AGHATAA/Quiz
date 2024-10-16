@@ -1,61 +1,67 @@
-create database Quiz;
-go 
-use Quiz
-go
+-- Criação do Banco de Dados
+CREATE DATABASE Quiz;
+GO
 
-create table Curso(
-id int identity(1,1) primary key,
-curso varchar (30),
-sigla varchar (5)
+USE Quiz;
+GO
+
+-- Criação da Tabela Curso
+CREATE TABLE Curso (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    curso VARCHAR(30),
+    sigla VARCHAR(5)
 );
-go
+GO
 
-create table Disciplina(
-
-id int identity(1,1) primary key,
-idCurso int foreign key references Curso,
-disciplina varchar(30),
-sigla varchar (5)
+-- Criação da Tabela Disciplina
+CREATE TABLE Disciplina (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    idCurso INT FOREIGN KEY REFERENCES Curso(id),
+    disciplina VARCHAR(30),
+    sigla VARCHAR(5)
 );
-go
+GO
 
-create table questoes(
-id int identity(1,1) primary key,
-Enunciado varchar (50),
-pontuacao int,
-idDisciplina int foreign key references Disciplina
+-- Criação da Tabela Questões
+CREATE TABLE Questao (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    enunciado VARCHAR(50),
+    pontuacao INT,
+    idDisciplina INT FOREIGN KEY REFERENCES Disciplina(id)
 );
-go
+GO
 
-create table Alternativa(
-id int identity(1,1) primary key,
-idQuestao int foreign key references questoes,
-Enunciado varchar (50),
-correta bit
+-- Criação da Tabela Alternativa
+CREATE TABLE Alternativa (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    idQuestao INT FOREIGN KEY REFERENCES Questao(id),
+    enunciado VARCHAR(50),
+    correta BIT
 );
-go
+GO
 
-create table usuario(
-id int identity(1,1) primary key,
-loginUsuario varchar (50),
-email varchar (100),
-senha varchar (30),
-pontuacao int
+-- Criação da Tabela Usuário
+CREATE TABLE Usuario (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    loginUsuario VARCHAR(50),
+    email VARCHAR(100),
+    senha VARCHAR(30),
+    pontuacao INT
 );
-go
+GO
 
-create table quiz(
-id int identity(1,1) primary key,
-dataquiz date,
-idCurso int foreign key references curso,
-idDisciplina int foreign key references disciplina,
-idUsuario int foreign key references usuario,
-idQuestoes01 int foreign key references questoes,
-idQuestoes02 int foreign key references questoes,
-idQuestoes03 int foreign key references questoes,
-idQuestoes04 int foreign key references questoes,
-idQuestoes05 int foreign key references questoes,
-pontuacao int
+-- Criação da Tabela Quiz
+CREATE TABLE Quiz (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    dataQuiz DATE,
+    idCurso INT FOREIGN KEY REFERENCES Curso(id),
+    idDisciplina INT FOREIGN KEY REFERENCES Disciplina(id),
+    idUsuario INT FOREIGN KEY REFERENCES Usuario(id),
+    idQuestoes01 INT FOREIGN KEY REFERENCES Questao(id),
+    idQuestoes02 INT FOREIGN KEY REFERENCES Questao(id),
+    idQuestoes03 INT FOREIGN KEY REFERENCES Questao(id),
+    idQuestoes04 INT FOREIGN KEY REFERENCES Questao(id),
+    idQuestoes05 INT FOREIGN KEY REFERENCES Questao(id),
+    pontuacao INT
 );
-go
-
+GO
