@@ -1,12 +1,12 @@
 -- Criação do Banco de Dados
-CREATE DATABASE Quiz;
+CREATE DATABASE quiz;
 GO
 
 USE Quiz;
 GO
 
 -- Criação da Tabela Curso
-CREATE TABLE Curso (
+CREATE TABLE curso (
     id INT IDENTITY(1,1) PRIMARY KEY,
     curso VARCHAR(30),
     sigla VARCHAR(5)
@@ -14,7 +14,7 @@ CREATE TABLE Curso (
 GO
 
 -- Criação da Tabela Disciplina
-CREATE TABLE Disciplina (
+CREATE TABLE disciplina (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idCurso INT FOREIGN KEY REFERENCES Curso(id),
     disciplina VARCHAR(30),
@@ -23,7 +23,7 @@ CREATE TABLE Disciplina (
 GO
 
 -- Criação da Tabela Questões
-CREATE TABLE Questao (
+CREATE TABLE questao (
     id INT IDENTITY(1,1) PRIMARY KEY,
     enunciado VARCHAR(50),
     pontuacao INT,
@@ -32,7 +32,7 @@ CREATE TABLE Questao (
 GO
 
 -- Criação da Tabela Alternativa
-CREATE TABLE Alternativa (
+CREATE TABLE alternativa (
     id INT IDENTITY(1,1) PRIMARY KEY,
     idQuestao INT FOREIGN KEY REFERENCES Questao(id),
     enunciado VARCHAR(50),
@@ -41,7 +41,7 @@ CREATE TABLE Alternativa (
 GO
 
 -- Criação da Tabela Usuário
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
     id INT IDENTITY(1,1) PRIMARY KEY,
     loginUsuario VARCHAR(50),
     email VARCHAR(100),
@@ -51,7 +51,7 @@ CREATE TABLE Usuario (
 GO
 
 -- Criação da Tabela Quiz
-CREATE TABLE Quiz (
+CREATE TABLE quiz (
     id INT IDENTITY(1,1) PRIMARY KEY,
     dataQuiz DATE,
     idCurso INT FOREIGN KEY REFERENCES Curso(id),

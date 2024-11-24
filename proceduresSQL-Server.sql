@@ -61,7 +61,7 @@ create proc consultarSiglaPorCurso
 @curso varchar (30)
 as
 begin
-select * from Curso where curso = @curso
+select * from curso where curso = @curso
 --exec consultarSiglaPorCurso
 end
 go
@@ -73,7 +73,7 @@ create proc consultarCursoPorSigla
 @sigla varchar (5)
 as
 begin
-select * from Curso where sigla = @sigla
+select * from curso where sigla = @sigla
 --exec consultarCursoPorSigla "DS"
 end
 go
@@ -291,7 +291,7 @@ CREATE PROC inserirAlternativa
 @correta BIT
 AS
 BEGIN
-INSERT INTO Alternativa VALUES (@idQuestao, @enunciado, @correta)
+INSERT INTO alternativa VALUES (@idQuestao, @enunciado, @correta)
 -- EXEC inserirAlternativa 1, 'Alternativa A', 1
 END
 GO
@@ -303,7 +303,7 @@ CREATE PROC deletarAlternativa
 @id INT
 AS
 BEGIN
-DELETE FROM Alternativa WHERE id = @id
+DELETE FROM alternativa WHERE id = @id
 -- EXEC deletarAlternativa 2
 END
 GO
@@ -318,7 +318,7 @@ CREATE PROC alterarAlternativa
 @correta BIT
 AS
 BEGIN
-UPDATE Alternativa SET idQuestao = @idQuestao, Enunciado = @enunciado, correta = @correta WHERE id = @id
+UPDATE alternativa SET idQuestao = @idQuestao, Enunciado = @enunciado, correta = @correta WHERE id = @id
 -- EXEC alterarAlternativa 1, 2, 'Alternativa A Alterada', 0
 END
 GO
@@ -329,7 +329,7 @@ GO
 CREATE PROC consultarAlternativa
 AS
 BEGIN
-SELECT * FROM Alternativa
+SELECT * FROM alternativa
 -- EXEC consultarAlternativa
 END
 GO
@@ -341,7 +341,7 @@ CREATE PROC consultarAlternativaPorQuestao
 @idQuestao INT
 AS
 BEGIN
-SELECT * FROM Alternativa WHERE idQuestao = @idQuestao
+SELECT * FROM alternativa WHERE idQuestao = @idQuestao
 ORDER BY NEWID() -- Ordena aleatoriamente as alternativas
 -- EXEC consultarAlternativaPorQuestao 1
 END
@@ -366,7 +366,7 @@ CREATE PROC consultarAlternativaPorEnunciado
 @enunciado VARCHAR(50)
 AS
 BEGIN
-SELECT * FROM Alternativa WHERE Enunciado = @enunciado
+SELECT * FROM alternativa WHERE Enunciado = @enunciado
 -- EXEC consultarAlternativaPorEnunciado 'Alternativa A'
 END
 GO
@@ -551,7 +551,7 @@ create proc deletarUsuario
 @id int
 as
 begin 
-delete Usuario where id=@id
+delete usuario where id=@id
 --exec deletarUsuario 2
 end
 go
@@ -604,7 +604,7 @@ go
 create proc consultarUsuario
 as
 begin
-select * from Usuario
+select * from usuario
 --exec consultarUsuario
 end
 go
@@ -658,7 +658,7 @@ BEGIN
     
     -- Obter a senha armazenada com base no ID ou login do usuário
     SELECT @senhaArmazenada = senha
-    FROM usuario
+    from usuario
     WHERE (id = @id OR loginUsuario = @loginUsuario)
     
     -- Verificar se a senha informada é igual à senha armazenada
@@ -738,7 +738,7 @@ BEGIN
             loginUsuario,
             pontuacao,
             ROW_NUMBER() OVER (ORDER BY pontuacao DESC) AS Colocacao
-        FROM usuario
+        from usuario
     ),
     UsuarioLogado AS (
         SELECT 
