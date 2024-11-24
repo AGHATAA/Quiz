@@ -207,6 +207,20 @@ END $$
 DELIMITER ;
 
 
+-- Alterar Pontuacao Questão
+
+DELIMITER $$
+
+CREATE PROCEDURE alterarPontuacaoQuestao(IN p_id INT, IN p_pontuacao INT)
+BEGIN
+    UPDATE questao 
+    SET pontuacao = p_pontuacao
+    WHERE id = p_id;
+END $$
+
+DELIMITER ;
+
+
 -- Consultar Questões
 
 DELIMITER $$

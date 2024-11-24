@@ -140,6 +140,16 @@ end
 go
 
 
+-- Consultar Disciplina por ID
+
+CREATE PROCEDURE consultarDisciplina
+AS
+BEGIN
+    SELECT * FROM disciplina;
+END;
+GO
+
+
 -- Consultar Disciplina por Curso
 
 create proc consultarDisciplinaPorCurso
@@ -202,6 +212,20 @@ END
 GO
 
 
+-- Alterar Pontuacao Questão
+
+CREATE PROCEDURE alterarPontuacaoQuestao
+    @p_id INT,
+    @p_pontuacao INT
+AS
+BEGIN
+    UPDATE questao
+    SET pontuacao = @p_pontuacao
+    WHERE id = @p_id;
+END;
+GO
+
+
 -- Consultar Questões
 
 CREATE PROC consultarQuestao
@@ -210,6 +234,19 @@ BEGIN
 SELECT * FROM questoes
 -- EXEC consultarQuestao
 END
+GO
+
+
+-- Consultar Questões por ID
+
+CREATE PROCEDURE consultarQuestaoPorID
+    @p_id INT
+AS
+BEGIN
+    SELECT * 
+    FROM questao
+    WHERE id = @p_id;
+END;
 GO
 
 
@@ -308,6 +345,18 @@ SELECT * FROM Alternativa WHERE idQuestao = @idQuestao
 ORDER BY NEWID() -- Ordena aleatoriamente as alternativas
 -- EXEC consultarAlternativaPorQuestao 1
 END
+GO
+
+-- Consultar Alternativa por ID
+
+CREATE PROCEDURE consultarAlternativaPorID
+    @p_id INT
+AS
+BEGIN
+    SELECT * 
+    FROM alternativa
+    WHERE id = @p_id;
+END;
 GO
 
 
