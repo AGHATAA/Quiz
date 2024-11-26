@@ -7,14 +7,26 @@ go
 
 -- Inserir Curso 
 
-create proc inserirCurso
-@curso varchar (30),
-@sigla varchar (5)
-as
-begin 
-insert into curso values (@curso,@sigla)
---exec inserirCurso "Secretariado","Sec"
-end
+CREATE PROCEDURE inserirCurso
+    @p_curso VARCHAR(30),
+    @p_sigla VARCHAR(5)
+AS
+BEGIN
+    -- Verificar se já existe o curso ou a sigla
+    IF EXISTS (
+        SELECT 1 FROM curso
+        WHERE curso = @p_curso OR sigla = @p_sigla
+    )
+    BEGIN
+        -- Se existir, lançar um erro
+        RAISERROR('Curso ou sigla já existem.', 16, 1);
+        RETURN;
+    END
+
+    -- Se não existir, inserir o novo curso
+    INSERT INTO curso (curso, sigla)
+    VALUES (@p_curso, @p_sigla);
+END;
 go
 
 
@@ -90,15 +102,27 @@ go
 
 -- Inserir Disciplina 
 
-create proc inserirDisciplina
-@idCurso INT,
-@disciplina varchar (50),
-@sigla varchar (5)
-as 
-begin
-insert into disciplina values ( @idCurso,@disciplina,@sigla)
---exec inserirDisciplina   1,"Banco de Dados","BD"
-end
+CREATE PROCEDURE inserirDisciplina
+    @p_idCurso INT,
+    @p_disciplina VARCHAR(50),
+    @p_sigla VARCHAR(5)
+AS
+BEGIN
+    -- Verificar se já existe a disciplina com o mesmo nome ou sigla para o curso
+    IF EXISTS (
+        SELECT 1 FROM disciplina
+        WHERE idCurso = @p_idCurso AND (disciplina = @p_disciplina OR sigla = @p_sigla)
+    )
+    BEGIN
+        -- Se existir, lançar um erro
+        RAISERROR('Disciplina ou sigla já existe para este curso.', 16, 1);
+        RETURN;
+    END
+
+    -- Se não existir, inserir a nova disciplina
+    INSERT INTO disciplina (idCurso, disciplina, sigla)
+    VALUES (@p_idCurso, @p_disciplina, @p_sigla);
+END;
 go
 
 
@@ -173,15 +197,27 @@ go
 
 -- Inserir Questão
 
-CREATE PROC inserirQuestao
-@enunciado VARCHAR(50),
-@pontuacao INT,
-@idDisciplina INT
+CREATE PROCEDURE inserirQuestao
+    @p_enunciado VARCHAR(400),
+    @p_pontuacao INT,
+    @p_idDisciplina INT
 AS
 BEGIN
-INSERT INTO questoes VALUES (@enunciado, @pontuacao, @idDisciplina)
--- EXEC inserirQuestao 'Oque é Database?', 10, 1
-END
+    -- Verificar se já existe a questão com o mesmo enunciado e a mesma disciplina
+    IF EXISTS (
+        SELECT 1 FROM questao
+        WHERE enunciado = @p_enunciado AND idDisciplina = @p_idDisciplina
+    )
+    BEGIN
+        -- Se existir, lançar um erro
+        RAISERROR('Já existe uma questão com esse enunciado nesta disciplina.', 16, 1);
+        RETURN;
+    END
+
+    -- Se não existir, inserir a nova questão
+    INSERT INTO questao (enunciado, pontuacao, idDisciplina)
+    VALUES (@p_enunciado, @p_pontuacao, @p_idDisciplina);
+END;
 GO
 
 
@@ -285,15 +321,27 @@ GO
 
 -- Inserir Alternativa
 
-CREATE PROC inserirAlternativa
-@idQuestao INT,
-@enunciado VARCHAR(50),
-@correta BIT
+CREATE PROCEDURE inserirAlternativa
+    @p_idQuestao INT,
+    @p_enunciado VARCHAR(400),
+    @p_correta BIT
 AS
 BEGIN
-INSERT INTO alternativa VALUES (@idQuestao, @enunciado, @correta)
--- EXEC inserirAlternativa 1, 'Alternativa A', 1
-END
+    -- Verificar se já existe a alternativa com o mesmo enunciado para a mesma questão
+    IF EXISTS (
+        SELECT 1 FROM alternativa
+        WHERE idQuestao = @p_idQuestao AND enunciado = @p_enunciado
+    )
+    BEGIN
+        -- Se existir, lançar um erro
+        RAISERROR('Alternativa com esse enunciado já existe para esta questão.', 16, 1);
+        RETURN;
+    END
+
+    -- Se não existir, inserir a nova alternativa
+    INSERT INTO alternativa (idQuestao, enunciado, correta)
+    VALUES (@p_idQuestao, @p_enunciado, @p_correta);
+END;
 GO
 
 
@@ -531,17 +579,28 @@ END
 
 -- Inserir Usuario 
 
-create proc inserirUsuario
-@id int,
-@loginUsuario varchar (50),
-@email varchar (100),
-@senha varchar (30),
-@pontuacao int
-as
-begin
-insert into usuario values(@loginUsuario,@email,@senha,@pontuacao)
---exec inserirUsuario "etec22","albert einsten@etec.sp.gov.br",123456,6.7
-end
+CREATE PROCEDURE inserirUsuario
+    @p_loginUsuario VARCHAR(50),
+    @p_email VARCHAR(100),
+    @p_senha VARCHAR(30),
+    @p_pontuacao INT
+AS
+BEGIN
+    -- Verificar se já existe o loginUsuario ou o email
+    IF EXISTS (
+        SELECT 1 FROM usuario
+        WHERE loginUsuario = @p_loginUsuario OR email = @p_email
+    )
+    BEGIN
+        -- Se existir, lançar um erro
+        RAISERROR('Usuário ou e-mail já existem.', 16, 1);
+        RETURN;
+    END
+    
+    -- Se não existir duplicata, inserir o novo usuário
+    INSERT INTO usuario (loginUsuario, email, senha, pontuacao)
+    VALUES (@p_loginUsuario, @p_email, @p_senha, @p_pontuacao);
+END;
 go
 
 
