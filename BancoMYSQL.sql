@@ -1,4 +1,4 @@
--- USE railway;
+USE railway;
 
 -- Criação da Tabela Curso
 CREATE TABLE curso (

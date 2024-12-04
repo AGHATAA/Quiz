@@ -6,28 +6,13 @@
 
 DELIMITER $$
 
-CREATE PROCEDURE inserirCurso(
-    IN p_curso VARCHAR(30),
-    IN p_sigla VARCHAR(5)
-)
+CREATE PROCEDURE inserirCurso(IN curso VARCHAR(30), IN sigla VARCHAR(5))
 BEGIN
-    -- Verificar se já existe o curso ou a sigla
-    IF EXISTS (
-        SELECT 1 FROM curso
-        WHERE curso = p_curso OR sigla = p_sigla
-    ) THEN
-        -- Se existir, lançar um erro
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Curso ou sigla já existem.';
-    ELSE
-        -- Se não existir, inserir o novo curso
-        INSERT INTO curso (curso, sigla)
-        VALUES (p_curso, p_sigla);
-    END IF;
+    INSERT INTO curso (curso, sigla) 
+    VALUES (curso, sigla);
 END$$
 
 DELIMITER ;
-
 
 
 -- Deletar Curso
@@ -103,29 +88,13 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE PROCEDURE inserirDisciplina(
-    IN p_idCurso INT,
-    IN p_disciplina VARCHAR(50),
-    IN p_sigla VARCHAR(5)
-)
+CREATE PROCEDURE inserirDisciplina(IN p_idCurso INT, IN p_disciplina VARCHAR(50), IN p_sigla VARCHAR(5))
 BEGIN
-    -- Verificar se já existe a disciplina com o mesmo nome ou sigla para o curso
-    IF EXISTS (
-        SELECT 1 FROM disciplina
-        WHERE idCurso = p_idCurso AND (disciplina = p_disciplina OR sigla = p_sigla)
-    ) THEN
-        -- Se existir, lançar um erro
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Disciplina ou sigla já existe para este curso.';
-    ELSE
-        -- Se não existir, inserir a nova disciplina
-        INSERT INTO disciplina (idCurso, disciplina, sigla)
-        VALUES (p_idCurso, p_disciplina, p_sigla);
-    END IF;
-END$$
+    INSERT INTO disciplina (idCurso, disciplina, sigla) 
+    VALUES (p_idCurso, p_disciplina, p_sigla);
+END $$
 
 DELIMITER ;
-
 
 
 -- Deletar Disciplina
@@ -203,29 +172,13 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE PROCEDURE inserirQuestao(
-    IN p_enunciado VARCHAR(400),
-    IN p_pontuacao INT,
-    IN p_idDisciplina INT
-)
+CREATE PROCEDURE inserirQuestao(IN p_enunciado VARCHAR(400), IN p_pontuacao INT, IN p_idDisciplina INT)
 BEGIN
-    -- Verificar se já existe a questão com o mesmo enunciado para a mesma disciplina
-    IF EXISTS (
-        SELECT 1 FROM questao
-        WHERE enunciado = p_enunciado AND idDisciplina = p_idDisciplina
-    ) THEN
-        -- Se existir, lançar um erro
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Já existe uma questão com esse enunciado nesta disciplina.';
-    ELSE
-        -- Se não existir, inserir a nova questão
-        INSERT INTO questao (enunciado, pontuacao, idDisciplina)
-        VALUES (p_enunciado, p_pontuacao, p_idDisciplina);
-    END IF;
-END$$
+    INSERT INTO questao (enunciado, pontuacao, idDisciplina) 
+    VALUES (p_enunciado, p_pontuacao, p_idDisciplina);
+END $$
 
 DELIMITER ;
-
 
 
 -- Deletar Questão
@@ -328,29 +281,13 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE PROCEDURE inserirAlternativa(
-    IN p_idQuestao INT,
-    IN p_enunciado VARCHAR(400),
-    IN p_correta BOOLEAN
-)
+CREATE PROCEDURE inserirAlternativa(IN p_idQuestao INT, IN p_enunciado VARCHAR(400), IN p_correta BOOLEAN)
 BEGIN
-    -- Verificar se já existe a alternativa com o mesmo enunciado para a mesma questão
-    IF EXISTS (
-        SELECT 1 FROM alternativa
-        WHERE idQuestao = p_idQuestao AND enunciado = p_enunciado
-    ) THEN
-        -- Se existir, lançar um erro
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Alternativa com esse enunciado já existe para esta questão.';
-    ELSE
-        -- Se não existir, inserir a nova alternativa
-        INSERT INTO alternativa (idQuestao, enunciado, correta)
-        VALUES (p_idQuestao, p_enunciado, p_correta);
-    END IF;
+    INSERT INTO alternativa (idQuestao, enunciado, correta) 
+    VALUES (p_idQuestao, p_enunciado, p_correta);
 END $$
 
 DELIMITER ;
-
 
 
 -- Deletar Alternativa
@@ -616,19 +553,8 @@ CREATE PROCEDURE inserirUsuario(
     IN p_pontuacao INT
 )
 BEGIN
-    -- Check for duplicate loginUsuario or email
-    IF EXISTS (
-        SELECT 1 FROM usuario
-        WHERE loginUsuario = p_loginUsuario OR email = p_email
-    ) THEN
-        -- Signal an error or handle the duplicate case
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Usuário ou e-mail já existem.';
-    ELSE
-        -- If no duplicate, proceed with the insert
-        INSERT INTO usuario (loginUsuario, email, senha, pontuacao)
-        VALUES (p_loginUsuario, p_email, p_senha, p_pontuacao);
-    END IF;
+    INSERT INTO usuario (loginUsuario, email, senha, pontuacao)
+    VALUES (p_loginUsuario, p_email, p_senha, p_pontuacao);
 END $$
 
 DELIMITER ;
@@ -921,5 +847,24 @@ BEGIN
 END;
 
 //
+
+DELIMITER ;
+
+
+-- Obter Top 10 Usuarios
+
+DELIMITER $$
+
+CREATE PROCEDURE ObterTop10Usuarios()
+BEGIN
+    SELECT 
+        loginUsuario, 
+        pontuacao
+    FROM 
+        usuario
+    ORDER BY 
+        pontuacao DESC
+    LIMIT 10;
+END$$
 
 DELIMITER ;

@@ -304,6 +304,9 @@ EXEC AtualizarSenha 2, 'etec123', 'etec123etec123';
 --EXEC ObterRanking 'ID_USUARIO', 'NOME_USUARIO';
 EXEC ObterRanking 2, 'etec123';
 
+--EXEC ObterTop10Usuarios 'RETORNA LOGIN E PONTUAÇÃO';
+EXEC ObterTop10Usuarios;
+
 -- MySQL
 
 --CALL inserirUsuario('NOME_USUARIO', 'EMAIL', 'SENHA', 'PONTUAÇÃO');
@@ -344,3 +347,6 @@ CALL AtualizarSenha(2, 'etec123', 'etec123etec123');
 
 --CALL ObterRanking('ID_USUARIO', 'NOME_USUARIO');
 CALL ObterRanking(2, 'etec123');
+
+--CALL ObterTop10Usuarios 'RETORNA LOGIN E PONTUAÇÃO';
+CALL ObterTop10Usuarios;
